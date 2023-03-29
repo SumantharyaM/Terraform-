@@ -6,7 +6,7 @@ variable "region" {
 }
 
 variable "environment" {
-  default = "value"
+  default = "dev"
 }
 
 variable "vpc_cidr" {
