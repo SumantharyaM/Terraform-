@@ -13,11 +13,9 @@ variable "vpc_cidr" {
 }
 
 variable "public_subnets_cidr" {
-  type        = list(any)
   default     = ["10.0.1.0/24"]
 }
 
 variable "private_subnets_cidr" {
-  type        = list(any)
   default     = ["10.0.10.0/24"]
 }
