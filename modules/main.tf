@@ -123,6 +123,25 @@ resource "aws_security_group" "default" {
     aws_vpc.vpc
   ]
   
+  ingress {
+    from_port = "0"
+    to_port   = "0"
+    protocol  = "-1"
+    self      = true
+  }
+
+  egress {
+    from_port = "0"
+    to_port   = "0"
+    protocol  = "-1"
+    self      = "true"
+  }
+
+  tags = {
+    Environment = "${var.environment}"
+  }
+}
+
   #EC2 creation 
   resource "aws_instance" "my_instance" {
   ami           = "ami-0c94855ba95c71c99"
@@ -150,24 +169,5 @@ resource "aws_security_group" "default" {
     inline = [
       "curl -Is www.google.com | head -1 | grep 200"
     ]
-  }
-}
-
-  ingress {
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-    self      = true
-  }
-
-  egress {
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-    self      = "true"
-  }
-
-  tags = {
-    Environment = "${var.environment}"
   }
 }
