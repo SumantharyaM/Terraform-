@@ -21,9 +21,7 @@ variable "private_subnets_cidr" {
   default     = "10.0.10.0/24"
 }
 
-variable "ec2_instance" {
-  default  = "example_instance"
-}
+
 
 variable  "ami" {
   default  = "ami-007855ac798b5175e"
