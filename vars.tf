@@ -21,8 +21,6 @@ variable "private_subnets_cidr" {
   default     = "10.0.10.0/24"
 }
 
-
-
 variable  "ami" {
   default  = "ami-007855ac798b5175e"
 }
