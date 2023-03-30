@@ -143,9 +143,9 @@ resource "aws_security_group" "default" {
 }
 
   #EC2 creation 
-  resource "aws_instance" "my_instance" {
-  ami           = "ami-0c94855ba95c71c99"
-  instance_type = "t2.micro"
+  resource "aws_instance" "${var." {
+  ami           = "${var.ami}"
+  instance_type = "${var.t2.micro}"
   subnet_id     = element(aws_subnet.private_subnet.*.id, count.index)
   vpc_security_group_ids = [aws_security_group.allow_ssh_and_internet.id]
 
