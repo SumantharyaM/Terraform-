@@ -26,7 +26,7 @@ variable "ec2_instance" {
 }
 
 variable  "ami" {
-  default  = "Ubuntu"
+  default  = "ami-007855ac798b5175e"
 }
 
 variable "instance_type" {
