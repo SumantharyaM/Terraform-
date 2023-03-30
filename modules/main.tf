@@ -145,7 +145,7 @@ resource "aws_security_group" "default" {
   #EC2 creation 
   resource "aws_instance" "example_instance" {
   ami           = "${var.ami}"
-  instance_type = "${var.}"
+  instance_type = "${var.instance_type}"
   subnet_id     = element(aws_subnet.private_subnet.*.id, count.index)
   vpc_security_group_ids = [aws_security_group.allow_ssh_and_internet.id]
 
@@ -156,12 +156,12 @@ resource "aws_security_group" "default" {
 
  #To check the internet connection
   resource "null_resource" "check_internet_connectivity" {
-  depends_on = [aws_instance.my_instance]
+  depends_on = [aws_instance.example_instance]
 
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
-      host        = aws_instance.my_instance.private_ip
+      host        = aws_instance.example_instance.private_ip
       user        = "ec2-user"
       private_key = file("~/.ssh/my_key.pem")
     }
