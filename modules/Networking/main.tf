@@ -20,13 +20,13 @@ resource "aws_internet_gateway" "ig" {
   }
 }
 
-# Elastic-IP (eip) for NAT
+# Elastic IP for NAT
 resource "aws_eip" "nat_eip" {
   vpc        = true
   depends_on = [aws_internet_gateway.ig]
 }
 
-# NAT
+# NAT gateway
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_eip.id
   subnet_id     = element(aws_subnet.public_subnet.*.id, 0)
@@ -94,7 +94,7 @@ resource "aws_route" "public_internet_gateway" {
   gateway_id             = aws_internet_gateway.ig.id
 }
 
-# Route for NAT
+# Route for NAT gateway
 resource "aws_route" "private_nat_gateway" {
   route_table_id         = aws_route_table.private.id
   destination_cidr_block = "0.0.0.0/0"
@@ -143,25 +143,25 @@ resource "aws_security_group" "default" {
 }
 
   #EC2 creation 
-  resource "aws_instance" "example_instance" {
+  resource "aws_instance" "test_instance" {
   ami           = "${var.ami}"
   instance_type = "${var.instance_type}"
   subnet_id     = element(aws_subnet.private_subnet.*.id, count.index)
   vpc_security_group_ids = [aws_security_group.allow_ssh_and_internet.id]
 
   tags = {
-    Name = "example_instance"
+    Name = "test_instance"
   }
 }
 
  #To check the internet connection
   resource "null_resource" "check_internet_connectivity" {
-  depends_on = [aws_instance.example_instance]
+  depends_on = [aws_instance.test_instance]
 
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
-      host        = aws_instance.example_instance.private_ip
+      host        = aws_instance.test_instance.private_ip
       user        = "ec2-user"
       private_key = file("~/.ssh/my_key.pem")
     }
