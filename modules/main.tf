@@ -150,7 +150,7 @@ resource "aws_security_group" "default" {
   vpc_security_group_ids = [aws_security_group.allow_ssh_and_internet.id]
 
   tags = {
-    Name = "My instance"
+    Name = "${var.example_instance}"
   }
 }
 
