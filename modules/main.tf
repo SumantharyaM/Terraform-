@@ -122,6 +122,36 @@ resource "aws_security_group" "default" {
   depends_on = [
     aws_vpc.vpc
   ]
+  
+  #EC2 creation 
+  resource "aws_instance" "my_instance" {
+  ami           = "ami-0c94855ba95c71c99"
+  instance_type = "t2.micro"
+  subnet_id     = element(aws_subnet.private_subnet.*.id, count.index)
+  vpc_security_group_ids = [aws_security_group.allow_ssh_and_internet.id]
+
+  tags = {
+    Name = "My instance"
+  }
+}
+
+ #To check the internet connection
+  resource "null_resource" "check_internet_connectivity" {
+  depends_on = [aws_instance.my_instance]
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      host        = aws_instance.my_instance.private_ip
+      user        = "ec2-user"
+      private_key = file("~/.ssh/my_key.pem")
+    }
+
+    inline = [
+      "curl -Is www.google.com | head -1 | grep 200"
+    ]
+  }
+}
 
   ingress {
     from_port = "0"
